@@ -1,0 +1,27 @@
+# Python specific
+*.py[cod]
+__pycache__/
+*.so
+*.egg-info/
+dist/
+build/
+*.egg
+pip-wheel-metadata/
+*.swp
+*.swo
+*.swn
+
+# Jupyter Notebooks specific
+.ipynb_checkpoints/
+*.ipynb_checkpoints/
+.nbconvert/
+*.nbconvert/
+*.html
+
+# Virtual environments
+venv/
+env/
+env_bak/
+
+# Other
+.DS_Store
