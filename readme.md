@@ -12,6 +12,10 @@ With this you can:
 
 # Usage
 
+```
+pip install notebook-prototyping
+```
+
 ### importing the entire notebook contents
 
 While developing it might be useful to import notebooks contents into other notebooks. This can be done via a pseudo import. currently the check for recursion is based on a heuristic trace stack depth
@@ -67,3 +71,4 @@ convert_to_module(nb_fname, True)
 
 - Currently the check for recursion is based on a heuristic trace stack depth, find a better way
 - Make it a [pypi package](https://packaging.python.org/en/latest/tutorials/packaging-projects/)
+    - [add classifiers](https://pypi.org/classifiers/)
