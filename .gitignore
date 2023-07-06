@@ -30,5 +30,4 @@ env_bak/
 # unnessecary files
 src/notebook_prototyping/example.py
 src/notebook_prototyping/nested/directory/third_example.py
-src/notebook_prototyping/notebook_import.py
 src/notebook_prototyping/second_example.py
