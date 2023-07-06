@@ -59,51 +59,55 @@ def count_substring_occurences(substr, str_list, raise_recursion_error_at):
     return count
 
 
-def import_notebook(fullname, path=None, raise_recursion_error_at=50):
-    """import a notebook as a module
+# def import_notebook(fullname, path=None, raise_recursion_error_at=50):
+#     """import a notebook as a module
 
-    still in development and currently vulnerable to endless recursion
-    hardcoded / magic number stack depth to raise value error
-    """
-    stack_traceback = traceback.format_stack()
-    count_self_calls = sum([count_substring_occurences(f"import_notebook({fullname},", stack_traceback, raise_recursion_error_at)])
-    if count_self_calls > 1:
-        raise ValueError(f"notebook {fullname} is likely imported recursively:\n\n{stack_traceback}")
-
-
-    path = find_notebook(fullname, path)
-    shell = InteractiveShell.instance()
-
-    print ("importing Jupyter notebook from %s" % path)
-
-    # load the notebook object
-    with io.open(path, 'r', encoding='utf-8') as f:
-        nb = read(f, 4)
+#     still in development and currently vulnerable to endless recursion
+#     hardcoded / magic number stack depth to raise value error
+#     """
+#     stack_traceback = traceback.format_stack()
+#     count_self_calls = sum([count_substring_occurences(f"import_notebook({fullname},", stack_traceback, raise_recursion_error_at)])
+#     if count_self_calls > 1:
+#         raise ValueError(f"notebook {fullname} is likely imported recursively:\n\n{stack_traceback}")
 
 
-    # create the module and add it to sys.modules
-    # if name in sys.modules:
-    #    return sys.modules[name]
-    mod = types.ModuleType(fullname)
-    mod.__file__ = path
-    # mod.__loader__ = self
-    mod.__dict__['get_ipython'] = get_ipython
+#     path = find_notebook(fullname, path)
+#     shell = InteractiveShell.instance()
 
-    # extra work to ensure that magics that would affect the user_ns
-    # actually affect the notebook module's ns
-    save_user_ns = shell.user_ns
-    shell.user_ns = mod.__dict__
+#     print ("importing Jupyter notebook from %s" % path)
 
-    try:
-        for cell in nb.cells:
-            if cell.cell_type == 'code':
-                # transform the input to executable Python
-                code = shell.input_transformer_manager.transform_cell(cell.source)
-                # run the code in themodule
-                exec(code, mod.__dict__)
-    finally:
-        shell.user_ns = save_user_ns
-    return mod
+#     # load the notebook object
+#     with io.open(path, 'r', encoding='utf-8') as f:
+#         nb = read(f, 4)
+
+
+#     # create the module and add it to sys.modules
+#     # if name in sys.modules:
+#     #    return sys.modules[name]
+#     mod = types.ModuleType(fullname)
+#     mod.__file__ = path
+#     # mod.__loader__ = self
+#     mod.__dict__['get_ipython'] = get_ipython
+
+#     # extra work to ensure that magics that would affect the user_ns
+#     # actually affect the notebook module's ns
+#     save_user_ns = shell.user_ns
+#     shell.user_ns = mod.__dict__
+
+#     try:
+#         for cell in nb.cells:
+#             if cell.cell_type == 'code':
+#                 # transform the input to executable Python
+#                 code = shell.input_transformer_manager.transform_cell(cell.source)
+#                 # run the code in themodule
+#                 try:
+#                     exec(code, mod.__dict__)
+#                 except NameError as e:
+#                     print("\n\nEncontered invalid name in code:{code}\n\n")
+#                     raise e
+#     finally:
+#         shell.user_ns = save_user_ns
+#     return mod
 
 
 def convert_to_module(fullname, path=None, overwrite=False):
